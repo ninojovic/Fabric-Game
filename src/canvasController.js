@@ -3,6 +3,8 @@ import { fabric } from 'fabric';
 import params from './params';
 import Box from './Box';
 
+import { identifyBoxByCoordinates } from './utilities';
+
 class CanvasController {
 	constructor({ gridHeight, gridWidth, gridSize }) {
 		this.canvas = null;
@@ -11,9 +13,14 @@ class CanvasController {
 		this.gridSize = gridSize;
 	}
 
-	initCanvasSetup(canvasDOMSelector) {
+	initBoardView(canvasDOMSelector) {
 		this.drawCanvas(canvasDOMSelector);
 		this.drawGridLines();
+	}
+
+	initBoardLogic(gameController) {
+	    this.generateGameBoxes(gameController);
+	    this.setClickEvent(gameController);
 	}
 
 	drawCanvas(canvasDOMSelector) {
@@ -58,6 +65,18 @@ class CanvasController {
     			this.canvas.add(rect);
     		}
     	}
+	}
+
+	setClickEvent(gameController) {
+	    this.canvas.on('mouse:down', (e) => {
+	        const { x, y } = e.absolutePointer;
+			const boxIdentifier = identifyBoxByCoordinates(x, y);
+			gameController.handleBoxClicked(boxIdentifier);
+	    });
+	}
+
+	resetCanvasController() {
+	    this.canvas.dispose();
 	}
 }
 

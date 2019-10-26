@@ -63,6 +63,14 @@ class GameController {
 			console.log('POINTS:', this.points);
 		}
 	}
+
+	resetGameController() {
+	    this.gameStarted = false;
+		this.boxesData = {};
+		this.selectableBoxesGroup = [];
+		this.currentlySelectedBox = null;
+		this.points = 0;
+	}
 }
 
 // Exporting just one instance of controller since we will never have multiple games running
