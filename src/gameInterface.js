@@ -22,3 +22,8 @@ export const resetGame = () => {
 	stopGame();
 	startGame();
 };
+
+export const undoMove = () => {
+	gameController.undoMove();
+	canvasController.canvas.renderAll();
+};

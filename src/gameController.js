@@ -1,19 +1,18 @@
-import { getSelectableBoxesIdentifiers } from './utilities';
+import { getSelectableBoxesIdentifiers, identifyBoxByCoordinates } from './utilities';
 
 class GameController {
 	constructor() {
 		this.gameStarted = false;
-		this.boxesData = {};
+		this.boxesData = {}; // Contains every box instance in the game
 		this.selectableBoxesGroup = [];
+		this.alreadySelectedBoxesGroup = []; // Containes every box selected by player sorted chronologically.
 		this.currentlySelectedBox = null;
-		this.points = 0;
 	}
 
 	handleBoxClicked(clickedBoxIdentifier) {
 		const boxSelected = this.setCurrentlySelectedBox(clickedBoxIdentifier);
 		if (boxSelected) {
 			this.setSelectableBoxesGroup(clickedBoxIdentifier);
-			this.points++;
 			this.checkForGameOverCondition();
 		}
 	}
@@ -34,8 +33,8 @@ class GameController {
 		    // If there was already selected box, we are setting it's status as already selected
 		    if (this.currentlySelectedBox) {
 				this.currentlySelectedBox.changeStatus('ALREADY_SELECTED');
+				this.alreadySelectedBoxesGroup.push(this.currentlySelectedBox);
 			}
-
 			clickedBox.changeStatus('CURRENTLY_SELECTED');
 			this.currentlySelectedBox = clickedBox;
 			this.gameStarted = true;
@@ -58,13 +57,37 @@ class GameController {
 		});
 	}
 
+	undoMove() {
+	    // If we undo on the first move, we are reseting the game
+	    if (!this.alreadySelectedBoxesGroup.length) {
+	        const gameOverEvent = new CustomEvent('gameOver', { detail: { playAgain: true } });
+			document.dispatchEvent(gameOverEvent);
+			return;
+	    }
+
+		// Getting the last selected box
+	    const lastSelectedBox = this.alreadySelectedBoxesGroup.pop();
+	    const { left, top } = lastSelectedBox;
+	    const lastSelectedBoxIdentifier = identifyBoxByCoordinates(left, top);
+
+		// Currently selected box becomes selectable
+		this.currentlySelectedBox.changeStatus('SELECTABLE');
+		this.selectableBoxesGroup.push(this.currentlySelectedBox);
+
+		// Last selected box becomes currently selected
+	    lastSelectedBox.changeStatus('CURRENTLY_SELECTED');
+	    this.currentlySelectedBox = lastSelectedBox;
+	    this.setSelectableBoxesGroup(lastSelectedBoxIdentifier);
+	}
+
 	checkForGameOverCondition() {
 		if (!this.selectableBoxesGroup.length && this.gameStarted) {
 		    // Since window.confirm dialog is blocking, we are using setTimeout to execute this code asynchronously
 		    // This will let the game finish all of the synchronous code before it blocks
 			setTimeout(() => {
-				const gameResult = this.points === 100 ? 'won' : 'lost';
-				const playAgain = confirm(`You have ${gameResult} the game!\nYour points: ${this.points} \nDo you wanna play again?`);
+			    const gamePoints = this.alreadySelectedBoxesGroup.length + 1;
+				const gameResult = gamePoints === 100 ? 'won' : 'lost';
+				const playAgain = confirm(`You have ${gameResult} the game!\nYour points: ${gamePoints} \nDo you wanna play again?`);
 				const gameOverEvent = new CustomEvent('gameOver', { detail: { playAgain } });
 				document.dispatchEvent(gameOverEvent);
 			});
@@ -76,7 +99,7 @@ class GameController {
 		this.boxesData = {};
 		this.selectableBoxesGroup = [];
 		this.currentlySelectedBox = null;
-		this.points = 0;
+		this.alreadySelectedBoxesGroup = [];
 	}
 }
 
