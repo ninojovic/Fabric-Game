@@ -1,0 +1,50 @@
+body {
+    font-family: sans-serif;
+    color: rgb(53, 57, 68);
+    line-height: 1.4;
+}
+
+.canvas-container{
+    margin: 0 auto;
+    border: 1px solid #EEEEEE;
+}
+
+.game-info{
+    text-align: center;
+}
+
+.game-title{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.game-description{
+    font-size: 16px;
+    margin: 20px 0px 30px;
+    padding: 0px 30px;
+}
+
+.game-action{
+    font-size: 16px;
+    margin: 20px 0px 30px;
+    padding: 0px 30px;
+}
+
+.action-buttons-wrapper{
+    margin: 0 auto;
+    width: 600px;
+    text-align: right;
+}
+
+.action-button{
+    margin-left: 20px;
+    font-size: 18px;
+    color: rgb(144, 140, 255);
+    cursor: pointer;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    padding: 0px;
+    background: none;
+}

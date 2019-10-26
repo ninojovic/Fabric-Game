@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>100 Boxes</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>100 Boxes</h1>
+    <div class="game-info">
+        <p class="game-title">The Game</p>
+        <p class="game-description">
+            Your goal in classic mode is to click on all 100 boxes. There is a predefined pattern of available boxes to click.
+            <br>
+            You lose game when you do not have any more boxes to click on.
+        </p>
+        <p class="game-action">To start the game just click on any field</p>
+    </div>
+    <div class="action-buttons-wrapper">
+        <button class="action-button button-undo">Undo</button>
+        <button class="action-button button-reset">Reset Game</button>
+    </div>
+    <canvas id="game-canvas"></canvas>
     <script src="main.js"></script>
 </body>
 </html>
