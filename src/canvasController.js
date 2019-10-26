@@ -21,6 +21,7 @@ class CanvasController {
 	initBoardLogic(gameController) {
 	    this.generateGameBoxes(gameController);
 	    this.setClickEvent(gameController);
+	    this.setHoverEvent();
 	}
 
 	drawCanvas(canvasDOMSelector) {
@@ -73,6 +74,22 @@ class CanvasController {
 			const boxIdentifier = identifyBoxByCoordinates(x, y);
 			gameController.handleBoxClicked(boxIdentifier);
 	    });
+	}
+
+	setHoverEvent() {
+	    const mouseInMouseOutHandler = eventType => ({ target }) => {
+	        if (target instanceof Box) {
+				if (target.status === 'SELECTABLE') {
+					target.fill = eventType === 'mouseOver' ? '#c3ba00' : '#c3baff';
+					target.hoverCursor = eventType === 'mouseOver' ? 'pointer' : 'default';
+					target.dirty = true;
+					this.canvas.renderAll();
+				}
+			}
+	    };
+
+	    this.canvas.on('mouse:over', mouseInMouseOutHandler('mouseOver'));
+	    this.canvas.on('mouse:out', mouseInMouseOutHandler('mouseOut'));
 	}
 
 	resetCanvasController() {
