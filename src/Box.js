@@ -4,6 +4,14 @@ export default class Box extends fabric.Rect {
 	constructor(config) {
 		super(config);
 		this.status = 'UNSELECTED';
+		this.pawImg = null;
+
+		fabric.util.loadImage('paw.png', (img) => {
+			this.pawImg = new fabric.Pattern({
+				source: img,
+				repeat: 'no-repeat',
+			});
+		});
 	}
 
 	changeStatus(status) {
@@ -21,7 +29,7 @@ export default class Box extends fabric.Rect {
 			this.fill = '#c3baff';
 			break;
 		case 'CURRENTLY_SELECTED':
-			this.fill = '#908cff';
+			this.fill = this.pawImg || '#908cff';
 			break;
 		case 'ALREADY_SELECTED':
 			this.fill = '#908cff';
