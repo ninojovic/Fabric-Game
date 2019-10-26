@@ -30,11 +30,12 @@ class GameController {
 	setCurrentlySelectedBox(boxIdentifier) {
 		const clickedBox = this.boxesData[boxIdentifier];
 
-		if (this.currentlySelectedBox) {
-			this.currentlySelectedBox.changeStatus('ALREADY_SELECTED');
-		}
-
 		if (!this.gameStarted || clickedBox.status === 'SELECTABLE') {
+		    // If there was already selected box, we are setting it's status as already selected
+		    if (this.currentlySelectedBox) {
+				this.currentlySelectedBox.changeStatus('ALREADY_SELECTED');
+			}
+
 			clickedBox.changeStatus('CURRENTLY_SELECTED');
 			this.currentlySelectedBox = clickedBox;
 			this.gameStarted = true;
