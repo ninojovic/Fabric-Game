@@ -60,8 +60,14 @@ class GameController {
 
 	checkForGameOverCondition() {
 		if (!this.selectableBoxesGroup.length && this.gameStarted) {
-			console.log('GAME-OVER');
-			console.log('POINTS:', this.points);
+		    // Since window.confirm dialog is blocking, we are using setTimeout to execute this code asynchronously
+		    // This will let the game finish all of the synchronous code before it blocks
+			setTimeout(() => {
+				const gameResult = this.points === 100 ? 'won' : 'lost';
+				const playAgain = confirm(`You have ${gameResult} the game!\nYour points: ${this.points} \nDo you wanna play again?`);
+				const gameOverEvent = new CustomEvent('gameOver', { detail: { playAgain } });
+				document.dispatchEvent(gameOverEvent);
+			});
 		}
 	}
 
