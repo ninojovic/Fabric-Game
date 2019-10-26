@@ -22,10 +22,10 @@ export const getSelectableBoxesIdentifiers = (centerBoxIdentifier) => {
 	const boundryY = BOARD_HEIGHT / BOX_SIZE;
 
 	selectableBoxesTransform.forEach((boxTransform) => {
-	    const boxMapping = [boxTransform[0] + centerBoxMapping[0], boxTransform[1] + centerBoxMapping[1]];
-	    if ((boxMapping[0] >= 0 && boxMapping[0] < boundryX) && (boxMapping[1] >= 0 && boxMapping[1] < boundryY)) {
-	        selectableBoxesIdentifiers.push(boxMapping.join('-'));
-	    }
+		const boxMapping = [boxTransform[0] + centerBoxMapping[0], boxTransform[1] + centerBoxMapping[1]];
+		if ((boxMapping[0] >= 0 && boxMapping[0] < boundryX) && (boxMapping[1] >= 0 && boxMapping[1] < boundryY)) {
+			selectableBoxesIdentifiers.push(boxMapping.join('-'));
+		}
 	});
 
 	return selectableBoxesIdentifiers;
