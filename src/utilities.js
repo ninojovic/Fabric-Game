@@ -1,3 +1,4 @@
+import { fabric } from 'fabric';
 import params from './params';
 
 const { BOARD_WIDTH, BOARD_HEIGHT, BOX_SIZE } = params;
@@ -30,3 +31,25 @@ export const getSelectableBoxesIdentifiers = (centerBoxIdentifier) => {
 
 	return selectableBoxesIdentifiers;
 };
+
+export const loadPawImg = () => new Promise(((resolve) => {
+	fabric.Image.fromURL('paw.png', (img) => {
+		img.scaleToWidth(BOX_SIZE);
+		const patternSourceCanvas = new fabric.StaticCanvas();
+		patternSourceCanvas.add(img);
+		patternSourceCanvas.renderAll();
+		const pawImg = new fabric.Pattern({
+			source() {
+				patternSourceCanvas.setDimensions({
+					width: img.getScaledWidth(),
+					height: img.getScaledHeight(),
+				});
+				patternSourceCanvas.renderAll();
+				return patternSourceCanvas.getElement();
+			},
+			repeat: 'repeat',
+		});
+
+		resolve(pawImg);
+	});
+}));

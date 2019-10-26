@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import { loadPawImg } from './utilities';
 
 export default class Box extends fabric.Rect {
 	constructor(config) {
@@ -6,11 +7,8 @@ export default class Box extends fabric.Rect {
 		this.status = 'UNSELECTED';
 		this.pawImg = null;
 
-		fabric.util.loadImage('paw.png', (img) => {
-			this.pawImg = new fabric.Pattern({
-				source: img,
-				repeat: 'no-repeat',
-			});
+		loadPawImg().then((img) => {
+			this.pawImg = img;
 		});
 	}
 
